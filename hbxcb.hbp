@@ -1,0 +1,30 @@
+# XCB
+
+-hblib
+-inc
+
+-olib/${hb_plat}/${hb_comp}/${hb_name}
+
+-w3 -es2 -gc3
+
+-depurlbase=xcb:https://xcb.freedesktop.org/
+-depkeyhead=xcb:xcb/xcb.h
+-depcontrol=xcb:${HB_WITH_XCB}
+-depincpath=xcb:/usr/include/xcb
+-depincpath=xcb:/usr/local/include/xcb
+-depincpath=xcb:/opt/local/include/xcb
+-depincpath=xcb:/usr/local/opt/xcb/include
+-depimplibs=xcb:../bin/xcb.dll
+-depimplibs=xcb:../lib/libxcb.a
+-depimplibd=xcb:libxcb
+-depfinish=xcb
+
+-iinclude
+
+-hbx=include/${hb_name}.hbx
+
+src/*.c
+src/*.prg
+
+$hb_pkg_dynlib.hbm
+$hb_pkg_install.hbm
