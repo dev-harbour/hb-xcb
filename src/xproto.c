@@ -425,7 +425,7 @@ HB_FUNC( XCB_CREATE_WINDOW_CHECKED )
    }
 }
 
-// xcb_void_cookie_t xcb_create_window         (xcb_connection_t *conn, uint8_t depth, xcb_window_t wid, xcb_window_t parent, int16_t x, int16_t y, uint16_t width, uint16_t height, uint16_t border_width, uint16_t _class, xcb_visualid_t visual, uint32_t value_mask, const uint32_t *value_list);
+// xcb_void_cookie_t xcb_create_window (xcb_connection_t *conn, uint8_t depth, xcb_window_t wid, xcb_window_t parent, int16_t x, int16_t y, uint16_t width, uint16_t height, uint16_t border_width, uint16_t _class, xcb_visualid_t visual, uint32_t value_mask, const uint32_t *value_list);
 HB_FUNC( XCB_CREATE_WINDOW )
 {
    xcb_connection_t * connection = hb_connection_Param( 1 );
@@ -629,7 +629,7 @@ HB_FUNC( XCB_MAP_WINDOW )
 // xcb_void_cookie_t xcb_change_property (xcb_connection_t *c, uint8_t mode, xcb_window_t window, xcb_atom_t property, xcb_atom_t type, uint8_t format, uint32_t data_len, const void *data);
 HB_FUNC( XCB_CHANGE_PROPERTY )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
@@ -812,7 +812,7 @@ HB_FUNC( XCB_CHANGE_PROPERTY )
 // xcb_void_cookie_t xcb_open_font_checked (xcb_connection_t *c, xcb_font_t fid, uint16_t name_len, const char *name);
 HB_FUNC( XCB_OPEN_FONT_CHECKED )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
@@ -834,7 +834,7 @@ HB_FUNC( XCB_OPEN_FONT_CHECKED )
 // xcb_void_cookie_t xcb_open_font (xcb_connection_t *c, xcb_font_t fid, uint16_t name_len, const char *name);
 HB_FUNC( XCB_OPEN_FONT )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
@@ -858,7 +858,7 @@ HB_FUNC( XCB_OPEN_FONT )
 // xcb_void_cookie_t xcb_close_font_checked (xcb_connection_t *c, xcb_font_t font);
 HB_FUNC( XCB_CLOSE_FONT_CHECKED )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
@@ -877,7 +877,7 @@ HB_FUNC( XCB_CLOSE_FONT_CHECKED )
 // xcb_void_cookie_t xcb_close_font (xcb_connection_t *c, xcb_font_t font);
 HB_FUNC( XCB_CLOSE_FONT )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
@@ -920,10 +920,54 @@ HB_FUNC( XCB_CLOSE_FONT )
 // int xcb_query_text_extents_sizeof (const void *_buffer, uint32_t string_len);
 
 // xcb_query_text_extents_cookie_t xcb_query_text_extents (xcb_connection_t *c, xcb_fontable_t font, uint32_t string_len, const xcb_char2b_t *string);
+HB_FUNC( XCB_QUERY_TEXT_EXTENTS )
+{
+   xcb_connection_t * connection = hb_connection_Param( 1 );
+   PHB_ITEM pItem;
+
+   if( connection && hb_param( 2, HB_IT_INTEGER ) != NULL &&
+                     hb_param( 3, HB_IT_INTEGER ) != NULL &&
+           ( pItem = hb_param( 4, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 2 )
+   {
+      xcb_char2b_t char2b;
+
+      char2b.byte1 = ( uint8_t ) hb_arrayGetNI( pItem, 1 );
+      char2b.byte2 = ( uint8_t ) hb_arrayGetNI( pItem, 2 );
+
+      xcb_query_text_extents_cookie_t cookie = xcb_query_text_extents( connection, ( xcb_fontable_t ) hb_parni( 2 ), ( uint32_t ) hb_parni( 3 ), &char2b );
+
+      PHB_ITEM pItem1 = hb_itemArrayNew( 1 );
+      hb_arraySetNI( pItem1, 1, ( unsigned int ) cookie.sequence );
+      hb_itemReturnRelease( pItem1 );
+   }
+   else
+   {
+      HB_ERR_ARGS();
+   }
+}
+
 
 // xcb_query_text_extents_cookie_t xcb_query_text_extents_unchecked (xcb_connection_t *c, xcb_fontable_t font, uint32_t string_len, const xcb_char2b_t *string);
 
 // xcb_query_text_extents_reply_t *xcb_query_text_extents_reply (xcb_connection_t *c, xcb_query_text_extents_cookie_t cookie /**< */, xcb_generic_error_t **e);
+HB_FUNC( XCB_QUERY_TEXT_EXTENTS_REPLY )
+{
+   xcb_connection_t * connection = hb_connection_Param( 1 );
+   PHB_ITEM pItem;
+
+   if( connection && ( pItem = hb_param( 2, HB_IT_ARRAY ) ) != NULL && hb_arrayLen( pItem ) == 1 )
+   {
+      xcb_query_text_extents_cookie_t cookie;
+
+      cookie.sequence = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
+
+      xcb_query_text_extents_reply( connection, cookie, NULL );
+   }
+   else
+   {
+      HB_ERR_ARGS();
+   }
+}
 
 // int xcb_str_sizeof (const void *_buffer);
 
@@ -1122,7 +1166,7 @@ HB_FUNC( XCB_CREATE_GC )
 // xcb_void_cookie_t xcb_free_gc_checked (xcb_connection_t *c, xcb_gcontext_t gc);
 HB_FUNC( XCB_FREE_GC_CHECKED )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
@@ -1141,7 +1185,7 @@ HB_FUNC( XCB_FREE_GC_CHECKED )
 // xcb_void_cookie_t xcb_free_gc (xcb_connection_t *c, xcb_gcontext_t gc);
 HB_FUNC( XCB_FREE_GC )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection && hb_param( 2, HB_IT_INTEGER ) != NULL )
    {
@@ -1212,7 +1256,7 @@ HB_FUNC( XCB_FREE_GC )
 // xcb_void_cookie_t xcb_poly_rectangle (xcb_connection_t *c, xcb_drawable_t drawable, xcb_gcontext_t gc, uint32_t rectangles_len, const xcb_rectangle_t *rectangles);
 HB_FUNC( XCB_POLY_RECTANGLE )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
    PHB_ITEM pItem;
 
    if( connection &&
@@ -1274,7 +1318,7 @@ HB_FUNC( XCB_POLY_RECTANGLE )
 // xcb_void_cookie_t xcb_poly_fill_rectangle (xcb_connection_t *c, xcb_drawable_t drawable, xcb_gcontext_t gc, uint32_t rectangles_len, const xcb_rectangle_t *rectangles);
 HB_FUNC( XCB_POLY_FILL_RECTANGLE )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
    PHB_ITEM pItem;
 
    if( connection &&
@@ -1372,7 +1416,7 @@ HB_FUNC( XCB_POLY_FILL_RECTANGLE )
 // xcb_void_cookie_t xcb_image_text_8_checked (xcb_connection_t *c, uint8_t string_len, xcb_drawable_t drawable, xcb_gcontext_t gc, int16_t x, int16_t y, const char *string);
 HB_FUNC( XCB_IMAGE_TEXT_8_CHECKED )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&
@@ -1398,7 +1442,7 @@ HB_FUNC( XCB_IMAGE_TEXT_8_CHECKED )
 // xcb_void_cookie_t xcb_image_text_8 (xcb_connection_t *c, uint8_t string_len, xcb_drawable_t drawable, xcb_gcontext_t gc, int16_t x, int16_t y, const char *string);
 HB_FUNC( XCB_IMAGE_TEXT_8 )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection &&
       hb_param( 2, HB_IT_INTEGER ) != NULL &&

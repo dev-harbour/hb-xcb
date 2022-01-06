@@ -346,7 +346,7 @@ HB_FUNC( XCB_GET_SETUP )
 // int xcb_get_file_descriptor(xcb_connection_t *c);
 HB_FUNC( XCB_GET_FILE_DESCRIPTOR )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection )
    {
@@ -361,7 +361,7 @@ HB_FUNC( XCB_GET_FILE_DESCRIPTOR )
 // int xcb_connection_has_error(xcb_connection_t *c);
 HB_FUNC( XCB_CONNECTION_HAS_ERROR )
 {
-   xcb_connection_t *connection = hb_connection_Param( 1 );
+   xcb_connection_t * connection = hb_connection_Param( 1 );
 
    if( connection )
    {

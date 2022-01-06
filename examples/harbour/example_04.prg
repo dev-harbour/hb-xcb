@@ -99,7 +99,7 @@ STATIC PROCEDURE drawText( pConnect, aScreen, nWindow, x1, y1, cLabel )
    /* Use the command `xlsfonts` in a terminal to know which are the fonts available on your computer. */
    nGC := getFontGC( pConnect, aScreen, nWindow, "fixed" )
 
-   aTextCookie := xcb_image_text_8_checked( pConnect, Len( cLabel ), nWindow, nGC, x1, y1, cLabel )
+   aTextCookie := xcb_image_text_8_checked( pConnect, strlen( cLabel ), nWindow, nGC, x1, y1, cLabel )
 
    testCookie( aTextCookie, pConnect, "can't paste text" )
 
@@ -119,7 +119,7 @@ STATIC FUNCTION getFontGC( pConnect, aScreen, nWindow, cFont_name )
 
    nFont := xcb_generate_id( pConnect )
 
-   aFontCookie := xcb_open_font_checked( pConnect, nFont, Len( cFont_name ), cFont_name )
+   aFontCookie := xcb_open_font_checked( pConnect, nFont, strlen( cFont_name ), cFont_name )
 
    testCookie( aFontCookie, pConnect, "can't open font" )
 

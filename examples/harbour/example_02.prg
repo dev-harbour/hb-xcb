@@ -53,7 +53,7 @@ PROCEDURE Main()
       XCB_WINDOW_CLASS_INPUT_OUTPUT, aScreen[ ROOT_VISUAL ], ;
       nMask, aValues )
 
-   xcb_change_property( pConnect, XCB_PROP_MODE_REPLACE, nWindow, XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8, Len( cString ), cString )
+   xcb_change_property( pConnect, XCB_PROP_MODE_REPLACE, nWindow, XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8, strlen( cString ), cString )
 
    xcb_map_window( pConnect, nWindow )
 
@@ -65,7 +65,7 @@ PROCEDURE Main()
 
          CASE XCB_EXPOSE
             xcb_poly_rectangle( pConnect, nWindow, nForeground, 1, aRectangles )
-            xcb_image_text_8( pConnect, Len( cString ), nWindow, nBackground, 20, 20, cString )
+            xcb_image_text_8( pConnect, strlen( cString ), nWindow, nBackground, 20, 20, cString )
             xcb_flush( pConnect )
             EXIT
 

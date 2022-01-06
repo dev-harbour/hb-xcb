@@ -18,4 +18,4 @@ Harbour module implementing bindings to [XCB](https://en.wikipedia.org/wiki/XCB)
    ./example_00
    ```
 
-[License](LICENSE) is obviously applied only for this repository.
+[License.](LICENSE)
