@@ -2,6 +2,10 @@
 
 Harbour module implementing bindings to [XCB](https://en.wikipedia.org/wiki/XCB).
 
+### Getting Started
+
+Installing hb-xcb requires XCB including its headers. For more info see [getting started](examples/README.md).
+
 ## Building
 
 - Build static library:

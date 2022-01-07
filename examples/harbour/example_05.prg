@@ -72,7 +72,7 @@ PROCEDURE Main()
 
    RETURN
 
-PROCEDURE drawText( pConnect, aScreen, nWindow, x, y, string, nColor )
+PROCEDURE drawText( pConnect, aScreen, nWindow, x, y, cString, nColor )
 
    LOCAL nFont
    LOCAL nGC
@@ -90,6 +90,6 @@ PROCEDURE drawText( pConnect, aScreen, nWindow, x, y, string, nColor )
    aValues4[ 4 ] := 1
    xcb_create_gc( pConnect, nGC, nWindow, nMask, aValues4 )
 
-   xcb_image_text_8( pConnect, strlen( string ), nWindow, nGC, x, y, string )
+   xcb_image_text_8( pConnect, strlen( cString ), nWindow, nGC, x, y, cString )
 
    RETURN

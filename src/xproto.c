@@ -961,7 +961,24 @@ HB_FUNC( XCB_QUERY_TEXT_EXTENTS_REPLY )
 
       cookie.sequence = ( unsigned int ) hb_arrayGetNI( pItem, 1 );
 
-      xcb_query_text_extents_reply( connection, cookie, NULL );
+      xcb_query_text_extents_reply_t * text_extents_reply = xcb_query_text_extents_reply( connection, cookie, NULL );
+
+      PHB_ITEM pItem = hb_itemArrayNew( 11 );
+
+      hb_arraySetNI( pItem, 1, ( uint8_t )  text_extents_reply->response_type   );
+      hb_arraySetNI( pItem, 2, ( uint8_t )  text_extents_reply->draw_direction  );
+      hb_arraySetNI( pItem, 3, ( uint16_t ) text_extents_reply->sequence        );
+      hb_arraySetNI( pItem, 4, ( uint32_t ) text_extents_reply->length          );
+      hb_arraySetNI( pItem, 5, ( int16_t  ) text_extents_reply->font_ascent     );
+      hb_arraySetNI( pItem, 6, ( int16_t  ) text_extents_reply->font_descent    );
+      hb_arraySetNI( pItem, 7, ( int16_t  ) text_extents_reply->overall_ascent  );
+      hb_arraySetNI( pItem, 8, ( int16_t  ) text_extents_reply->overall_descent );
+      hb_arraySetNI( pItem, 9, ( int32_t  ) text_extents_reply->overall_width   );
+      hb_arraySetNI( pItem, 10,( int32_t  ) text_extents_reply->overall_left    );
+      hb_arraySetNI( pItem, 11,( int32_t  ) text_extents_reply->overall_right   );
+
+      hb_itemReturnRelease( pItem );
+      free( text_extents_reply );
    }
    else
    {
